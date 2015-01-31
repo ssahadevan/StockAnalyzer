@@ -1,0 +1,76 @@
+#YAML
+#List of tickers
+tickerList:
+- ISRG
+- MA
+#- V
+#- XOM
+#- HDB
+#- IBN
+#- IBM
+#- JPM
+#- IBM
+#- AAPL
+#- GOOG
+#- AXP
+#- CSCO
+#- VOD
+#- EMC
+
+#Optimal Values
+optimalPeRatio:
+    12
+    
+optimalPegRatio:
+    1
+ 
+optimalDebt:
+    0
+
+optimalDebtToEquity:
+    20
+
+optimalQRevGrowth:
+     10
+
+optimalYield:
+     0
+
+optimalBeta:
+     1.0
+
+optimalType:
+    Growth
+    
+#Keys for items on ths key statistics page
+EPS_KEY:
+    "Diluted EPS (ttm):"
+PE_KEY:
+    "Trailing P/E (ttm, intraday):"
+PEG_RATIO_KEY:
+    "PEG Ratio (5 yr expected)1:"
+#DEBT_KEY:
+#    "Total Debt (mrq):"
+DEBT_TO_EQUITY_KEY:
+    "Total Debt/Equity (mrq):"
+Q_REV_GROWTH_KEY:
+    "Qtrly Revenue Growth (yoy):"
+YIELD_KEY:
+    "Forward Annual Dividend Yield4:"
+BETA_KEY:
+    "Beta:"
+#TICKER_NAME_KEY:
+#    "Ticker Name"
+TITLE_KEY:
+    "title"
+PRICE_KEY:
+    "Price"
+50DAY_MOVING_AVE_KEY:
+    "50-Day Moving Average3:"
+    
+200DAY_MOVING_AVE_KEY:
+    "200-Day Moving Average3:"
+
+FORWARD_PE_KEYCOUNT: 
+     3
+
