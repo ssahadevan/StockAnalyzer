@@ -79,10 +79,10 @@ def getMacroData(DEBUG):
     keys[keyCount]=key
     keyCount=keyCount + 1
     keyStats[key]=value;
-  
-    
+
+  # if DEBUG:
   #for k in keyStats:
-  #   print keyStats[k]
+  #     print keyStats[k]
 
   #print keyStats["Diluted EPS (ttm):"]
   if DEBUG:
@@ -94,10 +94,9 @@ def getMacroData(DEBUG):
 def getValueFromKey( keyStats, key ):
   return keyStats[key]
 
+# To Debug comment out following lines and run independently in pythonwin
 #print "Starting getMacroData"
-
-#keyStats , keyCount =getMacroData(DEBUG)
-
+#keyStats , keyCount =getMacroData(DEBUG);
 #print keyStats, keyCount;
   
   

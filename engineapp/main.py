@@ -189,7 +189,7 @@ class getMacroEconData(webapp.RequestHandler):
                     
         keyStats, count= getMacroData(DEBUG);
         
-        caseShillerPe=float ( getValueFromKey( keyStats, "Current Shiller PE Ratio") );
+        caseShillerPe=float ( getValueFromKey( keyStats, "CurrentShiller PE Ratio") );
         max=float ( getValueFromKey( keyStats, "Max:") );
         min=float ( getValueFromKey( keyStats, "Min:") );
         mean=float ( getValueFromKey( keyStats, "Mean:") );
