@@ -39,6 +39,10 @@ class TickerResultsNew(db.Model):
   qRevGrowth = db.FloatProperty()
   divYield = db.FloatProperty()
   beta = db.FloatProperty()
+ # priceToSales= db.FloatProperty()
+ # priceToBook=db.FloatProperty()
+ # bookValue=db.FloatProperty()
+ # marketCap=db.FloatProperty()
   
   recommendation=db.StringProperty()
   ticker = db.StringProperty()

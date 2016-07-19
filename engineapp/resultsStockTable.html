@@ -25,11 +25,11 @@
                         <td>Actual should be below the Optimal value</td>
                     </tr>
                      <tr>
-                        <td>Quarterly Revenue Growth</td>
-                        <td>{{ isQRevGrowthOk }}</td>
-                        <td>{{ qRevGrowth }}</td>
+                        <td>Book Value</td>
+                        <td>Not Tested</td>
+                        <td>{{ bookValue }}</td>
                         <td>{{ optimalQRevGrowth }}</td>
-                        <td>Quarterly Revenue Growth should be higher than the Optimal</td>
+                        <td>Book Value</td>
                     </tr>
                     <tr>
                         <td>Dividend Yield</td>
@@ -39,18 +39,18 @@
                         <td>Is Yield High? If optimal yield is configured to 0, then ignores the yield</td>
                     </tr>
                     <tr>
-                        <td>Debt to Equity Ratio</td>
-                        <td>{{ isDebtOk }}</td>
-                        <td>{{ debtToEquity }}</td>
+                        <td>Price to Book</td>
+                        <td>Not Tested</td>
+                        <td>{{ priceToBook }}</td>
                         <td>{{ optimalDebtToEquity }}</td>
-                        <td>Debt is low if actual is  less than Optimal</td>
+                        <td>Price to Book ratio</td>
                     </tr>
                     <tr>
-                        <td>Beta</td>
+                        <td>Price To Sales</td>
                         <td>Not Tested</td>
-                        <td>{{ beta }}</td>
+                        <td>{{ priceToSales}}</td>
                         <td>{{ optimalBeta }}</td>
-                        <td>Indicates how volatile a stock is</td>
+                        <td>Price To Book</td>
                     </tr>
                       <tr>
                         <td>50 Day Moving Average</td>
@@ -66,6 +66,14 @@
                         <td>None</td>
                         <td>200 Day Moving Average</td>
                     </tr>
+                    <tr>
+                        <td>Market Cap</td>
+                        <td>Not Tested</td>
+                        <td>{{ marketCap }}</td>
+                        <td>None</td>
+                        <td>Market Cap</td>
+                    </tr>
+
                 </tbody>
                 </table>      
     
