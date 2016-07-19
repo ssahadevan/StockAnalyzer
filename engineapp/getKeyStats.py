@@ -2,19 +2,29 @@ import sys, math
 import urllib2
 from BeautifulSoup import BeautifulSoup
 import logging
+from yahoo_finance import Share
+
+def getKeyStatsNew(ticker, DEBUG):
+ 
+  #print "In getKeyStatsNew"
+  
+  tickerData=Share( ticker) ;
+  #print tickerData.get_price();
+  
+  return tickerData;
 
 
 # Download the Key Statistics given a ticker symbol
 # Return Key Statistics and list of Keys
 def getKeyStats(ticker, DEBUG):
-  # Download Key Stats from http://finance.yahoo.com/q/ks?s=MA
+  # Download Key Stats from http://finance.tickerData.com/q/ks?s=MA
 
   # Open URL
-  #  myURL='http://ichart.finance.yahoo.com/table.csv?'+\
+  #  myURL='http://ichart.finance.tickerData.com/table.csv?'+\
   #                       's=%s&d=10&e=20&f=2010&g=d&a=9&b=20&c=2010'%t +\
   #                       '&ignore=.csv'
 
-  myURL='http://finance.yahoo.com/q/ks?s=%s'%ticker
+  myURL='http://finance.tickerData.com/q/ks?s=%s'%ticker
 
   if (DEBUG ):
       print myURL
@@ -36,6 +46,7 @@ def getKeyStats(ticker, DEBUG):
   foundName=False;
   if DEBUG:
     logging.error('In getKeyStats');
+    logging.error('myURL is %s', myURL) ;
     
   for td in soup('td'):
     # If Ticker Name was found, then price comes next.

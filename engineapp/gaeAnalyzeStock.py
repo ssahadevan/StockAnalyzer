@@ -123,6 +123,189 @@ def isHighPct( pct, optimalPct, key ):
 
 def getRecommendation( ticker , optimalValues):
   recommendation="SELL"
+  #TBD - Might be able to remove this
+  keyCount=0 ; 
+  #keyStats ,keyCount, keys=getKeyStats(ticker,DEBUG)
+  tickerData=getKeyStatsNew(ticker,DEBUG)
+  
+  # Set Optimal Valeues from Configs
+  optimalPeRatio=float ( optimalValues.peRatio )
+  optimalPegRatio=float ( optimalValues.pegRatio )
+  optimalDebt=optimalValues.debt
+  optimalDebtToEquity=float ( optimalValues.debtToEquity )
+  optimalQRevGrowth=float ( optimalValues.qRevGrowth )
+  optimalYield=float ( optimalValues.divYield )
+  optimalBeta=float ( optimalValues.beta )
+  optimalType=optimalValues.configType
+  
+  pegRatio= 0.0
+  debtToEquity=0.0
+  qRevGrowth=0.0
+  divYield=0.0
+  eps=0.0
+  pe=0.0
+  price=0.0
+  beta=0.0
+  tickerName="Unknown"
+  fiftyDayMovAvg=0.0;
+  twoHundredDayMovAvg=0.0
+
+  # For US Stocks & ADR's the expectedKeyCount is 61
+  expectedKeyCount=0;
+  isPeOk=False;
+  isPegOk=False;
+  isQRevGrowthOk=False;
+  isDivYieldOk=False;
+  isDebtOk=False; 
+  if (keyCount == expectedKeyCount ):
+     
+      #eps=float ( getValueFromKey( keyStats, getValueFromConfigs("EPS_KEY")) )
+      eps=float ( tickerData.get_earnings_share() );
+      
+      #pe=float ( getValueFromKey( keyStats, getValueFromConfigs("PE_KEY")) )
+      # Using the keycount for the forward pe. This is because the key is not a constant ( has a date in it ) i.e - Forward P/E (fye Sep 29, 2015)1:
+      # But it is always the 4th element in the valuation table.
+      forwardPeKeyCount= getValueFromConfigs("FORWARD_PE_KEYCOUNT");
+      #pe=float ( getValueFromKey( keyStats, keys[ forwardPeKeyCount ] ) );
+      pe=float( tickerData.get_price_earnings_ratio() );
+      # Use Trailing PE if forward PE is not available
+      #if ( pe == 0.0 ):
+      #  pe=float ( getValueFromKey( keyStats, getValueFromConfigs("PE_KEY")) )
+        
+
+      #Remove Date and Spaces to show Price
+      #price = ( getValueFromKey( keyStats, getValueFromConfigs("PRICE_KEY")) )
+      price = tickerData.get_price() ;
+      #logging.error("Price is %s", price );
+      
+      #tickerName =  ( getValueFromKey( keyStats, getValueFromConfigs("TICKER_NAME_KEY")) )
+      #tickerName =  ( getValueFromKey( keyStats, getValueFromConfigs("TITLE_KEY")) )
+      tickerName = ticker;
+      
+      #pegRatio=float( getValueFromKey( keyStats, getValueFromConfigs("PEG_RATIO_KEY")) )
+      pegRatio=float( tickerData.get_price_earnings_growth_ratio() );
+      
+      #fiftyDayMovAvg=float(getValueFromKey( keyStats, getValueFromConfigs("50DAY_MOVING_AVE_KEY")) )
+      fiftyDayMovAvg= float( tickerData.get_50day_moving_avg() ) ;
+      #twoHundredDayMovAvg=float(getValueFromKey( keyStats, getValueFromConfigs("200DAY_MOVING_AVE_KEY")) )
+      twoHundredDayMovAvg= float( tickerData.get_200day_moving_avg() ) ;
+      
+      if (DEBUG):
+        print "pegRatio is ", pegRatio
+
+      # If there is no debt, this works. If there is debt, say XOM fails because its says
+      # string 3.6B etc
+      #debtToEquity=getValueFromKey( keyStats , getValueFromConfigs("DEBT_TO_EQUITY_KEY") )
+      debtToEquity= "7.0" ;
+      if (DEBUG):
+        print "debtToEquity is ", debtToEquity
+
+      # Replace %. If NA value will be 0.
+      #qRevGrowth=getValueFromKey( keyStats , getValueFromConfigs("Q_REV_GROWTH_KEY") )
+      qRevGrowth="7.0";
+      if (DEBUG):
+        print "qRevGrowth is ", qRevGrowth
+
+      # Replace %. If NA value will be 0.
+      #divYield=getValueFromKey( keyStats , getValueFromConfigs("YIELD_KEY") )
+      divYield=tickerData.get_dividend_yield();
+      #beta=getValueFromKey( keyStats , getValueFromConfigs("BETA_KEY") )
+      beta="7.0";
+
+      if (DEBUG):
+        print "pegRatio is ", pegRatio, " debtToEquity is ", debtToEquity, " qRevGrowth is ", qRevGrowth ," yield is ", divYield
+
+      #logging.error('Before isFairlyValued:')
+      if ( isFairlyValued(pe, optimalPeRatio)):
+       isPeOk=True; 
+       if ( isFairlyValued(pegRatio, optimalPegRatio)):
+        isPegOk=True;
+        logging.error('After isFairlyValued')
+        if ( isHighPct( qRevGrowth, optimalQRevGrowth, getValueFromConfigs("Q_REV_GROWTH_KEY"))):
+          isQRevGrowthOk=True;
+          logging.error('After isHighPct qRevGrowth')
+          if ( isHighPct( divYield, optimalYield , getValueFromConfigs("YIELD_KEY"))):
+            isDivYieldOk=True;
+            logging.error('After isHighPct - Yield')
+            if ( isHighlyLevered( debtToEquity, optimalDebtToEquity ) ):
+              logging.error('After isHighlyLevered')
+              recommendation=SELL
+            else:
+              isDebtOk=True;
+              recommendation=BUY
+   
+
+  #Currently not used because it slows the response. 
+  title,link = getNewsForTicker(ticker);
+  #news=""
+  logging.debug( "getRecommendation: Title length is - %d", len(title)) ;
+  
+  templateValues = {
+            'ticker': ticker,
+            'tickerName': tickerName,
+            'keyCount': keyCount,
+            'expectedKeyCount':expectedKeyCount,
+            'recommendation': recommendation,
+            'price': price,
+            'pe': pe,
+            'pegRatio': pegRatio,
+            'debtToEquity': debtToEquity,
+            'qRevGrowth': qRevGrowth,
+            'divYield': divYield,
+            'beta':beta,
+            'fiftyDayMovAvg':fiftyDayMovAvg,
+            'twoHundredDayMovAvg':twoHundredDayMovAvg,
+            'optimalPeRatio': optimalPeRatio,
+            'optimalPegRatio': optimalPegRatio,
+            'optimalDebtToEquity': optimalDebtToEquity,
+            'optimalYield': optimalYield,
+            'optimalQRevGrowth': optimalQRevGrowth,
+            'optimalBeta': optimalBeta,
+            'configType': optimalType,
+            'isPeOk': isPeOk,
+            'isPegOk': isPegOk,
+            'isQRevGrowthOk': isQRevGrowthOk,
+            'isDivYieldOk': isDivYieldOk,
+            'isDebtOk': isDebtOk                
+        }
+
+  # Add News based on how many items there are.
+  loopCount=0 
+  while ( len( title ) > loopCount):
+      templateValues["title_" + str(loopCount)]= title[loopCount];
+      templateValues["link_" + str(loopCount) ]= link[loopCount];
+      loopCount = loopCount + 1 ;
+      logging.debug( "getRecommendation: Title length is - %d, templateValues = %s ", len(title) , templateValues ) ;
+  
+
+  logging.debug('Before Write to DB ticker %s is %s and beta is %s', ticker , recommendation , beta)
+  # Write the results to the database
+  if ( keyCount == expectedKeyCount ):
+    tickerResults = TickerResultsNew(ticker=ticker
+                               ,recommendation=recommendation
+                               ,price=float(price)
+                               ,peRatio=float(pe)
+                               ,pegRatio=float(pegRatio)
+                               ,debtToEquity=float(debtToEquity)
+                               ,qRevGrowth=float(qRevGrowth)
+                               ,divYield=float(divYield)
+                               ,beta=float( beta )
+                               ,optimalPeRatio=float(optimalPeRatio)
+                               ,optimalPegRatio=float( optimalPegRatio)
+                               ,optimalDebtToEquity=float( optimalDebtToEquity )
+                               ,optimalDivYield=float( optimalYield )
+                               ,optimalQRevGrowth=float( optimalQRevGrowth)
+                               ,optimalBeta=float( optimalBeta )
+                               ,configType= str(optimalType)
+                               )
+    tickerResults.put()
+  
+  logging.debug('Recommendation for ticker %s is %s', ticker , recommendation)
+  return templateValues
+
+# Old Method
+def getRecommendationOld( ticker , optimalValues):
+  recommendation="SELL"
   keyStats ,keyCount, keys=getKeyStats(ticker,DEBUG)
   
   # Set Optimal Valeues from Configs
@@ -288,7 +471,6 @@ def getRecommendation( ticker , optimalValues):
   
   logging.debug('Recommendation for ticker %s is %s', ticker , recommendation)
   return templateValues
-
 
 def initializeStockAnalysis():
     
