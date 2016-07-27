@@ -26,6 +26,19 @@ def getValueFromKey( keyStats, key ):
     
   return returnValue
 
+#Checks for None and returns Float value
+def convertToFloat( dataToConvert ):
+  returnValue=dataToConvert;
+
+  if (( returnValue is None )or ( returnValue=="NA" ) or  ( returnValue=="N/A" ) ):
+        returnValue=0.0;
+  else:
+        returnValue=float( returnValue );
+  
+ 
+  return returnValue
+
+
 
 
 

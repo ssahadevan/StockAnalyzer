@@ -162,30 +162,29 @@ def getRecommendation( ticker , optimalValues):
   isDivYieldOk=False;
   isDebtOk=False; 
   if (keyCount == expectedKeyCount ):
-      eps=float ( tickerData.get_earnings_share() );
+      eps=convertToFloat( tickerData.get_earnings_share() );
     
-      pe=tickerData.get_price_earnings_ratio();
-      if ( pe is None ):
-        pe=0.0;
-      else:
-        pe=float( pe );
+      pe=convertToFloat( tickerData.get_price_earnings_ratio() ) ;
+      #if ( pe is None ):
+      #  pe=0.0;
+      #else:
+      #  pe=float( pe );
         
       price = tickerData.get_price() ;
       #logging.error("Price is %s", price );
       
       tickerName = ticker;
-      bookValue=float( tickerData.get_book_value() );
+      bookValue=convertToFloat( tickerData.get_book_value() );
       marketCap= tickerData.get_market_cap() ;
-      priceToSales=float( tickerData.get_price_sales() );
-      priceToBook=float( tickerData.get_price_book() );
+      priceToSales=convertToFloat( tickerData.get_price_sales() );
+      priceToBook=convertToFloat( tickerData.get_price_book() );
       
-      #pegRatio=float( getValueFromKey( keyStats, getValueFromConfigs("PEG_RATIO_KEY")) )
-      pegRatio=float( tickerData.get_price_earnings_growth_ratio() );
+      pegRatio=convertToFloat( tickerData.get_price_earnings_growth_ratio() );
       
-      #fiftyDayMovAvg=float(getValueFromKey( keyStats, getValueFromConfigs("50DAY_MOVING_AVE_KEY")) )
-      fiftyDayMovAvg= float( tickerData.get_50day_moving_avg() ) ;
-      #twoHundredDayMovAvg=float(getValueFromKey( keyStats, getValueFromConfigs("200DAY_MOVING_AVE_KEY")) )
-      twoHundredDayMovAvg= float( tickerData.get_200day_moving_avg() ) ;
+      
+      fiftyDayMovAvg= convertToFloat( tickerData.get_50day_moving_avg() ) ;
+      
+      twoHundredDayMovAvg= convertToFloat( tickerData.get_200day_moving_avg() ) ;
       
       if (DEBUG):
         print "pegRatio is ", pegRatio
