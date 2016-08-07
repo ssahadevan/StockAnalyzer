@@ -220,18 +220,13 @@ def getRecommendation( ticker , optimalValues):
        if ( isFairlyValued(pegRatio, optimalPegRatio)):
         isPegOk=True;
         logging.error('After isFairlyValued')
-        if ( isHighPct( qRevGrowth, optimalQRevGrowth, getValueFromConfigs("Q_REV_GROWTH_KEY"))):
-          isQRevGrowthOk=True;
-          logging.error('After isHighPct qRevGrowth')
-          if ( isHighPct( divYield, optimalYield , getValueFromConfigs("YIELD_KEY"))):
+        isQRevGrowthOk=True;
+        if ( isHighPct( divYield, optimalYield , getValueFromConfigs("YIELD_KEY"))):
             isDivYieldOk=True;
             logging.error('After isHighPct - Yield')
-            if ( isHighlyLevered( debtToEquity, optimalDebtToEquity ) ):
-              logging.error('After isHighlyLevered')
-              recommendation=SELL
-            else:
-              isDebtOk=True;
-              recommendation=BUY
+            recommendation=BUY
+        else:
+            recommendation=SELL
    
 
   #Currently not used because it slows the response. 
